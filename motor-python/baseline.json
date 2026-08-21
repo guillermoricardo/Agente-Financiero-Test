@@ -1,0 +1,737 @@
+{
+  "carteras": [
+    {
+      "perfil": "conservador",
+      "plazo": 1.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.0275,
+      "volatilidad": 0.03944616584663204
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 2.9,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.0275,
+      "volatilidad": 0.03944616584663204
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 3.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.0275,
+      "volatilidad": 0.03944616584663204
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 5.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.0275,
+      "volatilidad": 0.03944616584663204
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 7.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.0275,
+      "volatilidad": 0.03944616584663204
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 7.1,
+      "pesos": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.031000000000000003,
+      "volatilidad": 0.04450842616853577
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 8.0,
+      "pesos": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.031000000000000003,
+      "volatilidad": 0.04450842616853577
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 10.0,
+      "pesos": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.031000000000000003,
+      "volatilidad": 0.04450842616853577
+    },
+    {
+      "perfil": "conservador",
+      "plazo": 20.0,
+      "pesos": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.031000000000000003,
+      "volatilidad": 0.04450842616853577
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 1.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.8,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.0285,
+      "volatilidad": 0.044104988380000744
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 2.9,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.8,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.0285,
+      "volatilidad": 0.044104988380000744
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 3.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.8,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.0285,
+      "volatilidad": 0.044104988380000744
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 5.0,
+      "pesos": {
+        "renta_variable": 0.4,
+        "renta_fija": 0.5,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.03900000000000001,
+      "volatilidad": 0.06726997844506864
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 7.0,
+      "pesos": {
+        "renta_variable": 0.4,
+        "renta_fija": 0.5,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.03900000000000001,
+      "volatilidad": 0.06726997844506864
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 7.1,
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.042499999999999996,
+      "volatilidad": 0.0795314403239373
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 8.0,
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.042499999999999996,
+      "volatilidad": 0.0795314403239373
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 10.0,
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.042499999999999996,
+      "volatilidad": 0.0795314403239373
+    },
+    {
+      "perfil": "moderado",
+      "plazo": 20.0,
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.042499999999999996,
+      "volatilidad": 0.0795314403239373
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 1.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.85,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.029,
+      "volatilidad": 0.04646302293221998
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 2.9,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.85,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.029,
+      "volatilidad": 0.04646302293221998
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 3.0,
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.85,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.029,
+      "volatilidad": 0.04646302293221998
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 5.0,
+      "pesos": {
+        "renta_variable": 0.7,
+        "renta_fija": 0.25,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.05,
+      "volatilidad": 0.1069757565993342
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 7.0,
+      "pesos": {
+        "renta_variable": 0.7,
+        "renta_fija": 0.25,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.05,
+      "volatilidad": 0.1069757565993342
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 7.1,
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.053500000000000006,
+      "volatilidad": 0.12098062861466707
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 8.0,
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.053500000000000006,
+      "volatilidad": 0.12098062861466707
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 10.0,
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.053500000000000006,
+      "volatilidad": 0.12098062861466707
+    },
+    {
+      "perfil": "dinamico",
+      "plazo": 20.0,
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.053500000000000006,
+      "volatilidad": 0.12098062861466707
+    }
+  ],
+  "carteras_base": [
+    {
+      "perfil": "conservador",
+      "pesos": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "rentabilidad": 0.031000000000000003,
+      "volatilidad": 0.04450842616853577
+    },
+    {
+      "perfil": "moderado",
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "rentabilidad": 0.042499999999999996,
+      "volatilidad": 0.0795314403239373
+    },
+    {
+      "perfil": "dinamico",
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "rentabilidad": 0.053500000000000006,
+      "volatilidad": 0.12098062861466707
+    }
+  ],
+  "flujo_libre": [
+    {
+      "args": [
+        3000.0,
+        2200.0,
+        true,
+        0.0
+      ],
+      "resultado": 800.0
+    },
+    {
+      "args": [
+        3000.0,
+        2200.0,
+        false,
+        1000.0
+      ],
+      "resultado": -200.0
+    },
+    {
+      "args": [
+        2000.0,
+        2000.0,
+        true,
+        0.0
+      ],
+      "resultado": 0.0
+    },
+    {
+      "args": [
+        1800.0,
+        2100.0,
+        true,
+        0.0
+      ],
+      "resultado": -300.0
+    }
+  ],
+  "aportacion_propuesta": [
+    {
+      "args": [
+        null,
+        800.0,
+        true,
+        false
+      ],
+      "resultado": {
+        "propuesta": [
+          560.0,
+          640.0
+        ],
+        "rango_sostenible": [
+          560.0,
+          640.0
+        ],
+        "tope": 640.0,
+        "viable": true
+      }
+    },
+    {
+      "args": [
+        null,
+        800.0,
+        true,
+        true
+      ],
+      "resultado": {
+        "propuesta": [
+          560.0,
+          640.0
+        ],
+        "rango_sostenible": [
+          560.0,
+          640.0
+        ],
+        "tope": 800.0,
+        "viable": true
+      }
+    },
+    {
+      "args": [
+        500.0,
+        800.0,
+        true,
+        false
+      ],
+      "resultado": {
+        "propuesta": 500.0,
+        "rango_sostenible": [
+          560.0,
+          640.0
+        ],
+        "tope": 640.0,
+        "viable": true
+      }
+    },
+    {
+      "args": [
+        700.0,
+        800.0,
+        true,
+        false
+      ],
+      "resultado": {
+        "propuesta": [
+          560.0,
+          640.0
+        ],
+        "rango_sostenible": [
+          560.0,
+          640.0
+        ],
+        "tope": 640.0,
+        "viable": false
+      }
+    },
+    {
+      "args": [
+        640.0,
+        800.0,
+        true,
+        true
+      ],
+      "resultado": {
+        "propuesta": 640.0,
+        "rango_sostenible": [
+          560.0,
+          640.0
+        ],
+        "tope": 800.0,
+        "viable": true
+      }
+    }
+  ],
+  "vf_determinista": [
+    {
+      "args": [
+        15000.0,
+        640.0,
+        0.031,
+        10.0
+      ],
+      "resultado": 110054.24549687894
+    },
+    {
+      "args": [
+        5000.0,
+        560.0,
+        0.0246,
+        3.0
+      ],
+      "resultado": 26270.07392278918
+    },
+    {
+      "args": [
+        10000.0,
+        800.0,
+        0.0,
+        3.0
+      ],
+      "resultado": 38800.0
+    },
+    {
+      "args": [
+        0.0,
+        250.0,
+        0.054,
+        20.0
+      ],
+      "resultado": 106033.87541700133
+    },
+    {
+      "args": [
+        50000.0,
+        0.0,
+        0.043,
+        15.0
+      ],
+      "resultado": 94023.1140044673
+    }
+  ],
+  "a_euros_actuales": [
+    {
+      "args": [
+        100000.0,
+        10.0
+      ],
+      "resultado": 82034.82998751552
+    },
+    {
+      "args": [
+        25000.0,
+        3.0
+      ],
+      "resultado": 23558.058363676108
+    },
+    {
+      "args": [
+        1000000.0,
+        30.0
+      ],
+      "resultado": 552070.8889799116
+    }
+  ],
+  "anios_hasta_meta": [
+    {
+      "args": [
+        15000.0,
+        640.0,
+        0.031,
+        200000.0
+      ],
+      "resultado": 25.8
+    },
+    {
+      "args": [
+        5000.0,
+        800.0,
+        0.0246,
+        100000.0
+      ],
+      "resultado": 10.8
+    },
+    {
+      "args": [
+        0.0,
+        250.0,
+        0.054,
+        500000.0
+      ],
+      "resultado": 67.2
+    },
+    {
+      "args": [
+        5000.0,
+        800.0,
+        0.0246,
+        2000000.0
+      ],
+      "resultado": null
+    }
+  ],
+  "convertir_meta_renta": [
+    {
+      "args": [
+        5000.0,
+        ">=40"
+      ],
+      "resultado": 2000000.0
+    },
+    {
+      "args": [
+        2000.0,
+        "~30"
+      ],
+      "resultado": 738461.5384615384
+    },
+    {
+      "args": [
+        1500.0,
+        "~20"
+      ],
+      "resultado": 450000.0
+    }
+  ],
+  "monte_carlo": [
+    {
+      "caso": {
+        "patrimonio": 5000.0,
+        "aportacion": 560.0,
+        "perfil": "conservador",
+        "plazo": 3.0,
+        "objetivo": null
+      },
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "resultado": {
+        "p10": 23494.212951860834,
+        "p50": 24846.785809141664,
+        "p90": 26298.977912880815,
+        "n": 10000,
+        "mu_cartera": 0.0275,
+        "sigma_cartera": 0.03944616584663204
+      }
+    },
+    {
+      "caso": {
+        "patrimonio": 5000.0,
+        "aportacion": 640.0,
+        "perfil": "conservador",
+        "plazo": 3.0,
+        "objetivo": 2000000.0
+      },
+      "pesos": {
+        "renta_variable": 0.1,
+        "renta_fija": 0.7,
+        "liquidez": 0.2
+      },
+      "resultado": {
+        "p10": 26176.18816171651,
+        "p50": 27669.22884454496,
+        "p90": 29261.221532661697,
+        "n": 10000,
+        "mu_cartera": 0.0275,
+        "sigma_cartera": 0.03944616584663204,
+        "prob_cumplimiento": 0.0,
+        "banda": "Baja"
+      }
+    },
+    {
+      "caso": {
+        "patrimonio": 15000.0,
+        "aportacion": 500.0,
+        "perfil": "moderado",
+        "plazo": 20.0,
+        "objetivo": 300000.0
+      },
+      "pesos": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "resultado": {
+        "p10": 106632.43815682264,
+        "p50": 144579.60134567542,
+        "p90": 197349.06404983313,
+        "n": 10000,
+        "mu_cartera": 0.042499999999999996,
+        "sigma_cartera": 0.0795314403239373,
+        "prob_cumplimiento": 0.0012,
+        "banda": "Baja"
+      }
+    },
+    {
+      "caso": {
+        "patrimonio": 0.0,
+        "aportacion": 300.0,
+        "perfil": "dinamico",
+        "plazo": 30.0,
+        "objetivo": 400000.0
+      },
+      "pesos": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      },
+      "resultado": {
+        "p10": 74227.17912120208,
+        "p50": 129326.48965991559,
+        "p90": 234201.0495476267,
+        "n": 10000,
+        "mu_cartera": 0.053500000000000006,
+        "sigma_cartera": 0.12098062861466707,
+        "prob_cumplimiento": 0.0105,
+        "banda": "Baja"
+      }
+    }
+  ],
+  "supuestos": {
+    "RETORNO_NOMINAL": {
+      "liquidez": 0.02,
+      "renta_fija": 0.03,
+      "renta_variable": 0.065,
+      "oro": 0.03
+    },
+    "COSTES_ANUALES": 0.004,
+    "INFLACION": 0.02,
+    "VOLATILIDAD": {
+      "liquidez": 0.005,
+      "renta_fija": 0.05,
+      "renta_variable": 0.15,
+      "oro": 0.15
+    },
+    "CARTERAS_BASE": {
+      "conservador": {
+        "renta_variable": 0.2,
+        "renta_fija": 0.6,
+        "liquidez": 0.2
+      },
+      "moderado": {
+        "renta_variable": 0.5,
+        "renta_fija": 0.4,
+        "liquidez": 0.1
+      },
+      "dinamico": {
+        "renta_variable": 0.8,
+        "renta_fija": 0.15,
+        "liquidez": 0.05
+      }
+    },
+    "TASA_RETIRADA": {
+      ">=40": 0.03,
+      "~30": 0.0325,
+      "~20": 0.04
+    },
+    "TOPE_APORTACION": [
+      0.7,
+      0.8
+    ],
+    "N_TRAYECTORIAS": 10000
+  }
+}

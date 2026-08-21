@@ -1,0 +1,6 @@
+allowBuilds:
+  # esbuild: dependencia de Vitest, compila un binario nativo necesario para
+  # correr los tests. Paquete oficial (evanw/esbuild), sin alternativa prebuilt.
+  esbuild: true
+  sharp: false
+  unrs-resolver: false
