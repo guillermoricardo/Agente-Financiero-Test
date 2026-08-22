@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { calcularProgreso, fusionarDato, resumenFichaParaPrompt } from './ficha-entrevista';
+import {
+  aplicarCorrecciones,
+  calcularProgreso,
+  fusionarDato,
+  resumenDeudasEnLenguajeLlano,
+  resumenFichaParaPrompt,
+} from './ficha-entrevista';
 
 describe('fusionarDato', () => {
   it('guarda un dato confirmado bajo el campo camelCase correcto', () => {
@@ -140,5 +146,83 @@ describe('resumenFichaParaPrompt', () => {
     const datos = fusionarDato({}, { clave: 'colchon_meses', valor: 5, etiqueta: 'confirmado' });
     const resumen = resumenFichaParaPrompt(datos);
     expect(resumen).toContain('colchonMeses: 5 [confirmado]');
+  });
+});
+
+describe('aplicarCorrecciones', () => {
+  // docs/roadmap.md Fase 6: "Correcciones → confirmado".
+  it('un campo estimado que el cliente cambia pasa a confirmado', () => {
+    const antes = fusionarDato({}, { clave: 'gasto_total_mes', valor: 2000, etiqueta: 'estimado' });
+    const despues = aplicarCorrecciones(antes, { gasto_total_mes: 2100 });
+    expect(despues.gastoTotalMes).toEqual({ valor: 2100, etiqueta: 'confirmado' });
+  });
+
+  it('un campo que el cliente deja tal cual NO pierde su etiqueta original', () => {
+    const antes = fusionarDato({}, { clave: 'gasto_total_mes', valor: 2000, etiqueta: 'estimado' });
+    const despues = aplicarCorrecciones(antes, { gasto_total_mes: 2000 });
+    expect(despues.gastoTotalMes?.etiqueta).toBe('estimado');
+  });
+
+  it('rellenar un campo que estaba vacío también cuenta como confirmado', () => {
+    const despues = aplicarCorrecciones({}, { colchon_meses: 6 });
+    expect(despues.colchonMeses).toEqual({ valor: 6, etiqueta: 'confirmado' });
+  });
+
+  it('un campo vacío en el envío no borra un dato ya capturado', () => {
+    const antes = fusionarDato({}, { clave: 'objetivo_descripcion', valor: 'jubilarme', etiqueta: 'confirmado' });
+    const despues = aplicarCorrecciones(antes, { objetivo_descripcion: '' });
+    expect(despues.objetivoDescripcion?.valor).toBe('jubilarme');
+  });
+
+  it('conserva la cita original cuando el valor no cambia', () => {
+    const antes = fusionarDato(
+      {},
+      { clave: 'colchon_meses', valor: 5, etiqueta: 'confirmado', cita: 'unos 5 meses' },
+    );
+    const despues = aplicarCorrecciones(antes, { colchon_meses: 5 });
+    expect(despues.colchonMeses?.cita).toBe('unos 5 meses');
+  });
+
+  it('ignora claves que no son campos editables (deudas no se toca aquí)', () => {
+    const antes = fusionarDato(
+      {},
+      { clave: 'deudas', valor: { tipo: 'ninguna' }, etiqueta: 'confirmado' },
+    );
+    const despues = aplicarCorrecciones(antes, { deudas: 'algo' });
+    expect(despues.deudas).toEqual(antes.deudas);
+  });
+});
+
+describe('resumenDeudasEnLenguajeLlano', () => {
+  it('sin dato todavía', () => {
+    expect(resumenDeudasEnLenguajeLlano(undefined)).toContain('Todavía no se habló');
+  });
+
+  it('sin deudas', () => {
+    expect(resumenDeudasEnLenguajeLlano({ valor: { tipo: 'ninguna' }, etiqueta: 'confirmado' })).toContain(
+      'no tienes deudas',
+    );
+  });
+
+  it('negativa del cliente', () => {
+    const resumen = resumenDeudasEnLenguajeLlano({
+      valor: { tipo: 'pendiente', motivo: 'negativa_cliente' },
+      etiqueta: 'pendiente',
+    });
+    expect(resumen).toContain('Marta lo verá contigo');
+  });
+
+  it('lista con saldo desconocido (caso Laura)', () => {
+    const resumen = resumenDeudasEnLenguajeLlano({
+      valor: {
+        tipo: 'lista',
+        deudas: [{ tipo: 'hipoteca', saldo: null, cuota: 620, interes: 1.9 }],
+      },
+      etiqueta: 'confirmado',
+    });
+    expect(resumen).toContain('hipoteca');
+    expect(resumen).toContain('cuota 620');
+    expect(resumen).toContain('interés 1.9%');
+    expect(resumen).toContain('sin especificar');
   });
 });

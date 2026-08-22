@@ -1,6 +1,13 @@
 'use client';
 
+import Link from 'next/link';
 import { useRef, useState, useEffect, type FormEvent } from 'react';
+
+// Fase 6: la despedida literal de src/lib/claude/prompt.ts (§ "Cierre") es
+// determinista — siempre el mismo texto —, así que basta con buscar un
+// fragmento fijo de ella en el historial para saber que la entrevista llegó
+// a su fin y mostrar el enlace a la pantalla de confirmación.
+const FRAGMENTO_DESPEDIDA = 'más rápido que rellenar un formulario';
 
 export interface MensajeChat {
   rol: 'agente' | 'cliente';
@@ -48,6 +55,10 @@ export default function ChatEntrevista({
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const finalRef = useRef<HTMLDivElement>(null);
+
+  const entrevistaTerminada = mensajes.some(
+    (mensaje) => mensaje.rol === 'agente' && mensaje.contenido.includes(FRAGMENTO_DESPEDIDA),
+  );
 
   useEffect(() => {
     finalRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -117,6 +128,17 @@ export default function ChatEntrevista({
         )}
         <div ref={finalRef} />
       </div>
+
+      {entrevistaTerminada && (
+        <div className="mb-4 flex justify-center">
+          <Link
+            href={`/entrevista/${token}/confirmar`}
+            className="rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+          >
+            Revisar y confirmar mi resumen
+          </Link>
+        </div>
+      )}
 
       {error && (
         <p className="mb-2 text-sm text-red-700" role="alert">

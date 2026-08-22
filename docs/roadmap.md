@@ -17,7 +17,7 @@
 | Motor original (Python) | ✅ Conservado como oráculo |
 | Esquema de base de datos | ✅ Escrito, sin aplicar |
 | Documentación del proyecto | ✅ Completa |
-| Aplicación | 🟡 Fase 4 (la entrevista que habla) completada — siguiente: Fase 5 |
+| Aplicación | 🟡 Fase 6 (confirmación y cierre) completada — siguiente: Fase 7 |
 
 ---
 
@@ -142,7 +142,7 @@ y recargar la página mantuvo la conversación entera.
 
 ---
 
-## Fase 5 · La entrevista que escucha
+## Fase 5 · La entrevista que escucha ✅
 
 **La fase decisiva del proyecto.** Aquí la conversación se vuelve datos.
 
@@ -160,9 +160,19 @@ El criterio real de esta fase: **la variante 1 del guion tiene que salir como
 `estimado`.** Si sale `confirmado`, la fase no está terminada por mucho que el
 chat funcione.
 
+**Completada el 2026-08-21** — ver
+`changelog/2026-08-21_03-52_captura-estructurada-fase-5.md`. Verificado en la
+máquina del usuario con las cuatro pruebas de
+`material-clase/GUION-CLIENTE-PRUEBA.md`: el Guion A completo dio las 14
+variables en `confirmado` con el pendiente correcto sobre el saldo de la
+hipoteca; la Variante 1 dio `gasto_total_mes` en `estimado` (el criterio real
+de la fase); la Variante 2 no volvió a preguntar la hipoteca mencionada fuera
+de orden; y la Variante 3 dejó `deudas` en `pendiente` tras la negativa del
+cliente, sin insistir más de una vez.
+
 ---
 
-## Fase 6 · Confirmación y cierre
+## Fase 6 · Confirmación y cierre ✅
 
 - Pantalla de resumen editable en lenguaje llano.
 - Correcciones → `confirmado`.
@@ -171,6 +181,16 @@ chat funcione.
 
 **Hecho cuando:** se llega al final, se corrige un dato, y en la base de datos
 aparece cambiado y como `confirmado`.
+
+**Completada el 2026-08-22** — ver
+`changelog/2026-08-22_03-37_confirmacion-y-cierre-fase-6.md`. Verificado en
+la máquina del usuario: al llegar a la despedida aparece el botón "Revisar y
+confirmar mi resumen", el formulario se abre con los datos ya rellenos y el
+descargo de orientación educativa visible (no escondido), al confirmar la
+ficha se actualiza en el sitio (sigue en `version = 1`, nada se sobrescribió
+porque nada estaba cerrado antes), `entrevistas.estado` pasó a
+`"completada"`, y el campo corregido (`colchonMeses`) quedó en `datos` con
+`"etiqueta": "confirmado"`.
 
 ---
 

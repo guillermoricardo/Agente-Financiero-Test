@@ -13,7 +13,7 @@
 // mismo. Por eso, a diferencia de docs/testing.md § "por qué el chat no
 // lleva tests automáticos", esta parte sí los lleva.
 
-import type { Dato, Etiqueta, Ficha } from '@/lib/motor/ficha';
+import type { Dato, Deudas, Etiqueta, Ficha } from '@/lib/motor/ficha';
 
 export type ClaveDato =
   | 'objetivo_descripcion'
@@ -179,6 +179,154 @@ export function resumenFichaParaPrompt(datos: FichaParcial): string {
   }
 
   return lineas.join('\n');
+}
+
+// Fase 6 · "Confirmación y cierre" — docs/roadmap.md: "pantalla de resumen
+// editable en lenguaje llano". Los 13 campos de abajo son escalares (texto o
+// número) y se editan con un input normal. `deudas` queda fuera a propósito:
+// es la única variable de forma compuesta (una lista de deudas, cada una con
+// cuota/interés/saldo, o el caso especial de negativa del cliente) — meterla
+// en un formulario de campo único sería o mentiroso (perder estructura) o
+// pesado de construir bien para esta fase. Se muestra en modo lectura con un
+// resumen en español; cualquier corrección se comenta con Marta en la
+// reunión, igual que ya contempla el guion cuando el cliente prefiere no
+// detallar sus deudas.
+export const CAMPOS_EDITABLES: {
+  clave: Exclude<ClaveDato, 'deudas' | 'pendientes'>;
+  campo: keyof Ficha;
+  etiquetaCampo: string;
+  tipo: 'texto' | 'numero';
+}[] = [
+  { clave: 'objetivo_descripcion', campo: 'objetivoDescripcion', etiquetaCampo: 'Tu objetivo', tipo: 'texto' },
+  { clave: 'objetivo_cifra', campo: 'objetivoCifra', etiquetaCampo: 'Cifra que quieres alcanzar', tipo: 'numero' },
+  { clave: 'objetivo_plazo', campo: 'objetivoPlazo', etiquetaCampo: 'En cuántos años', tipo: 'numero' },
+  { clave: 'ingresos_netos_mes', campo: 'ingresosNetosMes', etiquetaCampo: 'Ingresos netos al mes', tipo: 'numero' },
+  { clave: 'ingresos_estabilidad', campo: 'ingresosEstabilidad', etiquetaCampo: 'Tus ingresos son', tipo: 'texto' },
+  { clave: 'gasto_total_mes', campo: 'gastoTotalMes', etiquetaCampo: 'Gasto total al mes', tipo: 'numero' },
+  {
+    clave: 'aportacion_mensual_actual',
+    campo: 'aportacionMensualActual',
+    etiquetaCampo: 'Lo que ahorras o inviertes al mes',
+    tipo: 'numero',
+  },
+  {
+    clave: 'patrimonio_total',
+    campo: 'patrimonioTotal',
+    etiquetaCampo: 'Total ahorrado o invertido hoy',
+    tipo: 'numero',
+  },
+  {
+    clave: 'patrimonio_distribucion',
+    campo: 'patrimonioDistribucion',
+    etiquetaCampo: 'Dónde está ese dinero',
+    tipo: 'texto',
+  },
+  { clave: 'colchon_meses', campo: 'colchonMeses', etiquetaCampo: 'Meses de colchón', tipo: 'numero' },
+  {
+    clave: 'riesgo_experiencia',
+    campo: 'riesgoExperiencia',
+    etiquetaCampo: 'Tu experiencia invirtiendo antes',
+    tipo: 'texto',
+  },
+  {
+    clave: 'riesgo_escenario',
+    campo: 'riesgoEscenario',
+    etiquetaCampo: 'Ante una caída del 20%, tú...',
+    tipo: 'texto',
+  },
+  {
+    clave: 'riesgo_perfil_derivado',
+    campo: 'riesgoPerfilDerivado',
+    etiquetaCampo: 'Tu perfil de riesgo',
+    tipo: 'texto',
+  },
+];
+
+/** Frase en español de lo que se capturó sobre deudas, para mostrar en modo lectura. */
+export function resumenDeudasEnLenguajeLlano(dato?: Dato<Deudas>): string {
+  if (!dato || dato.valor === null || dato.valor === undefined) {
+    return 'Todavía no se habló de esto en la conversación.';
+  }
+
+  const deudas = dato.valor;
+
+  if (deudas.tipo === 'ninguna') {
+    return 'Dijiste que no tienes deudas.';
+  }
+
+  if (deudas.tipo === 'pendiente') {
+    return deudas.motivo === 'negativa_cliente'
+      ? 'Preferiste no dar el detalle. Marta lo verá contigo en la reunión.'
+      : 'Todavía no se preguntó por esto.';
+  }
+
+  if (deudas.tipo === 'solo_flag') {
+    return deudas.hayInteresAlto
+      ? 'Confirmaste que sí hay alguna deuda con interés alto.'
+      : 'Confirmaste que no hay ninguna deuda con interés alto.';
+  }
+
+  if (deudas.deudas.length === 0) {
+    return 'No se registró ninguna deuda concreta.';
+  }
+
+  return deudas.deudas
+    .map((d) => {
+      const partes = [d.tipo || 'deuda'];
+      if (d.cuota !== null) partes.push(`cuota ${d.cuota}`);
+      if (d.interes !== null) partes.push(`interés ${d.interes}%`);
+      partes.push(d.saldo !== null ? `saldo pendiente ${d.saldo}` : 'saldo pendiente sin especificar');
+      return partes.join(', ');
+    })
+    .join(' · ');
+}
+
+/**
+ * Fase 6: aplica las correcciones del formulario de confirmación. A
+ * diferencia de fusionarDato (que decide la etiqueta según cómo se obtuvo el
+ * dato durante el chat), aquí la etiqueta la decide una regla fija del
+ * roadmap: "Correcciones → confirmado". Si el cliente revisa un campo y lo
+ * deja tal cual como estaba, no se toca su etiqueta anterior; si lo cambia
+ * (incluido rellenar uno que estaba vacío o `pendiente`), pasa a
+ * `confirmado` — ya lo confirmó él mismo, con su propia mano, en la pantalla
+ * pensada exactamente para eso.
+ */
+export function aplicarCorrecciones(
+  datosActuales: FichaParcial,
+  valores: Record<string, string | number | null>,
+): FichaParcial {
+  let resultado = datosActuales;
+
+  for (const { clave, campo, tipo } of CAMPOS_EDITABLES) {
+    if (!(clave in valores)) continue;
+
+    const enviado = valores[clave];
+    const valorNuevo =
+      enviado === null || enviado === ''
+        ? null
+        : tipo === 'numero'
+          ? Number(enviado)
+          : String(enviado).trim();
+
+    if (valorNuevo === null) continue; // Un campo vacío no borra un dato ya capturado.
+    if (tipo === 'numero' && Number.isNaN(valorNuevo)) continue;
+
+    const datoActual = (resultado as Record<string, Dato<unknown> | undefined>)[campo];
+    const cambio = JSON.stringify(datoActual?.valor) !== JSON.stringify(valorNuevo);
+
+    if (!cambio) continue;
+
+    resultado = {
+      ...resultado,
+      [campo]: {
+        valor: valorNuevo,
+        etiqueta: 'confirmado' as Etiqueta,
+        ...(datoActual?.cita ? { cita: datoActual.cita } : {}),
+      },
+    };
+  }
+
+  return resultado;
 }
 
 /** Campos denormalizados que docs/data-model.md pide escribir junto a `datos`. */
