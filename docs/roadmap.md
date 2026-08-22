@@ -17,7 +17,7 @@
 | Motor original (Python) | ✅ Conservado como oráculo |
 | Esquema de base de datos | ✅ Escrito, sin aplicar |
 | Documentación del proyecto | ✅ Completa |
-| Aplicación | 🟡 Fase 6 (confirmación y cierre) completada — siguiente: Fase 7 |
+| Aplicación | 🟡 Fase 7 (diagnóstico) completada — siguiente: Fase 8 |
 
 ---
 
@@ -194,7 +194,7 @@ porque nada estaba cerrado antes), `entrevistas.estado` pasó a
 
 ---
 
-## Fase 7 · Diagnóstico
+## Fase 7 · Diagnóstico ✅
 
 Conectar el motor, que ya está hecho.
 
@@ -206,6 +206,15 @@ Conectar el motor, que ya está hecho.
 **Hecho cuando:** una ficha completa produce un análisis con probabilidad y
 banda, y una ficha con negativa sobre deudas queda en modo suspendido sin
 recomendación.
+
+**Completada el 2026-08-22** — ver
+`changelog/2026-08-22_17-35_diagnostico-fase-7.md`. Verificado en la máquina
+del usuario, disparando el cálculo automáticamente al confirmar la ficha
+(Fase 6): una entrevista completa produjo en `analisis` un registro
+`modo: "completo"` con `monteCarlo` en `p10 ≤ p50 ≤ p90` y `banda` con
+valor (`"Baja"` en la prueba); y una entrevista con negativa sobre deudas
+produjo `modo: "suspendido"` con `cartera`, `proyeccion` y `monteCarlo` en
+`null` — sin ninguna recomendación calculada.
 
 ---
 

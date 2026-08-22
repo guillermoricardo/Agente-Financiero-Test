@@ -175,3 +175,31 @@ el plan.
 `objetivo_plazo`, `perfil`, `tipo_de_meta`). Es duplicación consciente: el
 listado del panel necesita ordenar y filtrar sin abrir el `jsonb` de cada
 cliente. Se escriben en el mismo momento que la ficha y nunca por separado.
+
+`tipo_de_meta` se calcula (Fase 7) con la misma clasificación por palabras
+clave sobre `objetivo_descripcion` que usa el análisis —
+`src/lib/analisis/clasificar-meta.ts` — en el instante en que la ficha se
+cierra.
+
+---
+
+## Qué guarda `analisis` (Fase 7)
+
+`resultado` es el `AnalisisResultado` completo de
+`src/lib/analisis/generar-analisis.ts`, serializado tal cual a `jsonb`: modo,
+tipo de meta con su razón, situación actual (flujo libre, colchón, resumen de
+deudas, perfil de riesgo), los supuestos aplicados en texto (para que Marta
+sepa qué se dio por hecho y por qué), la cartera ajustada por plazo, la
+proyección determinista (VF, gap, años hasta la meta) y el resultado del
+Monte Carlo (percentiles p10/p50/p90, probabilidad de cumplimiento y banda).
+Fuera del modo `completo` no hay cartera, proyección ni Monte Carlo — es la
+regla de R9: sin las variables críticas, no hay propuesta ejecutable que
+calcular.
+
+Se dispara automáticamente al cerrar la ficha
+(`POST /api/entrevistas/[token]/confirmar`, Fase 6): todavía no existe el
+panel de Marta (Fase 9) desde el que lanzarlo a mano. Cada corrección
+posterior a una entrevista ya `completada` crea una fila nueva en `fichas`
+(nunca se sobrescribe una cerrada) y, con ella, una fila nueva en `analisis`
+— la tabla está pensada para varias filas por `ficha_id`, ordenadas por
+`calculado_en`.
