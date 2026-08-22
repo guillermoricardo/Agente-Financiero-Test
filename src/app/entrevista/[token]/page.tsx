@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { supabaseServidor } from '@/lib/supabase/cliente-servidor';
 import ChatEntrevista, { type MensajeChat } from '@/components/ChatEntrevista';
+import { calcularProgreso, type FichaParcial } from '@/lib/claude/ficha-entrevista';
 
 // docs/roadmap.md Fase 3, "comprobación que importa": sin aceptar el
 // consentimiento no se puede llegar aquí de ninguna forma. Esto se cumple
@@ -66,9 +67,26 @@ export default async function Entrevista({
     mensajesIniciales = [{ rol: 'agente', contenido: APERTURA_LITERAL }];
   }
 
+  // Fase 5: si ya hay una ficha en curso (version 1, todavía sin cerrar —
+  // ver el comentario de VERSION_FICHA_EN_CURSO en la ruta del chat), se
+  // carga su progreso para que la barra de los 8 bloques no vuelva a cero
+  // al recargar la página.
+  const { data: fichaGuardada } = await supabaseServidor
+    .from('fichas')
+    .select('datos')
+    .eq('entrevista_id', entrevista.id)
+    .eq('version', 1)
+    .maybeSingle();
+
+  const progresoInicial = calcularProgreso((fichaGuardada?.datos as FichaParcial) ?? {});
+
   return (
     <div className="flex flex-1 flex-col items-center bg-zinc-50 px-6 py-8">
-      <ChatEntrevista token={entrevista.token} mensajesIniciales={mensajesIniciales} />
+      <ChatEntrevista
+        token={entrevista.token}
+        mensajesIniciales={mensajesIniciales}
+        progresoInicial={progresoInicial}
+      />
     </div>
   );
 }

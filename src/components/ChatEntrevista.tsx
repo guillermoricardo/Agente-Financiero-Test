@@ -7,17 +7,43 @@ export interface MensajeChat {
   contenido: string;
 }
 
-// docs/design-system.md: calma antes que impacto. El chat solo necesita
-// mostrar la conversación y un campo para escribir — nada de barras de
-// progreso ni indicadores todavía (eso llega con la ficha, en la Fase 5).
+export interface ProgresoFicha {
+  bloquesCompletos: number;
+  totalBloques: number;
+  bloques: { numero: number; titulo: string; completo: boolean }[];
+}
+
+// docs/design-system.md: calma antes que impacto. La barra de progreso
+// (Fase 5) es deliberadamente discreta — puntos, no una barra con
+// porcentaje: nadie necesita saber "43%", solo tener una idea de cuánto
+// falta. El detalle de cada bloque solo aparece al pasar el cursor/tocar.
+function BarraDeProgreso({ progreso }: { progreso: ProgresoFicha }) {
+  return (
+    <div className="mb-4 flex items-center justify-center gap-1.5" aria-hidden={false}>
+      {progreso.bloques.map((bloque) => (
+        <span
+          key={bloque.numero}
+          title={`${bloque.numero}. ${bloque.titulo}${bloque.completo ? ' — cubierto' : ''}`}
+          className={`h-1.5 w-5 rounded-full transition-colors ${
+            bloque.completo ? 'bg-zinc-800' : 'bg-zinc-200'
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ChatEntrevista({
   token,
   mensajesIniciales,
+  progresoInicial,
 }: {
   token: string;
   mensajesIniciales: MensajeChat[];
+  progresoInicial: ProgresoFicha;
 }) {
   const [mensajes, setMensajes] = useState<MensajeChat[]>(mensajesIniciales);
+  const [progreso, setProgreso] = useState<ProgresoFicha>(progresoInicial);
   const [texto, setTexto] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,6 +77,9 @@ export default function ChatEntrevista({
       }
 
       setMensajes((actuales) => [...actuales, { rol: 'agente', contenido: cuerpo.contenido }]);
+      if (cuerpo.progreso) {
+        setProgreso(cuerpo.progreso);
+      }
     } catch {
       setError('No se pudo conectar. Revisa tu conexión e intenta de nuevo.');
     } finally {
@@ -60,7 +89,9 @@ export default function ChatEntrevista({
 
   return (
     <div className="flex w-full max-w-lg flex-1 flex-col">
-      <div className="flex-1 space-y-4 overflow-y-auto px-1 py-6">
+      <BarraDeProgreso progreso={progreso} />
+
+      <div className="flex-1 space-y-4 overflow-y-auto px-1 py-2">
         {mensajes.map((mensaje, indice) => (
           <div
             key={indice}
