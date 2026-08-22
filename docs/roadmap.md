@@ -17,7 +17,7 @@
 | Motor original (Python) | ✅ Conservado como oráculo |
 | Esquema de base de datos | ✅ Escrito, sin aplicar |
 | Documentación del proyecto | ✅ Completa |
-| Aplicación | 🟡 Fase 7 (diagnóstico) completada — siguiente: Fase 8 |
+| Aplicación | 🟡 Fase 8 (el plan en cristiano) completada — siguiente: Fase 9 |
 
 ---
 
@@ -218,7 +218,7 @@ produjo `modo: "suspendido"` con `cartera`, `proyeccion` y `monteCarlo` en
 
 ---
 
-## Fase 8 · El plan en cristiano
+## Fase 8 · El plan en cristiano ✅
 
 - Redacción por el modelo de las 8 secciones fijas, **a partir del JSON del
   motor**. Ni un número generado por el modelo.
@@ -227,6 +227,17 @@ produjo `modo: "suspendido"` con `cartera`, `proyeccion` y `monteCarlo` en
 
 **Hecho cuando:** el plan se lee sin saber finanzas, y toda cifra que aparece
 está también en `analisis`.
+
+**Completada el 2026-08-22** — ver
+`changelog/2026-08-22_18-31_plan-en-cristiano-fase-8.md`. Verificado en la
+máquina del usuario con una entrevista completa nueva ("Mauricio"): la
+pantalla `/entrevista/[token]/plan` mostró las 8 secciones en lenguaje llano,
+el botón "Descargar" bajó el `.md` completo, y cada cifra citada en el plan
+se cruzó una a una contra la fila de `analisis` correspondiente y coincidió
+exactamente — `vfActualEurosHoy` (~4.261.696 €), `gapEuros` (0),
+`objetivoReal` (500.000 €), y el Monte Carlo completo
+(`p10` 853.242,63 / `p50` 1.154.237,01 / `p90` 1.560.774,55 /
+`probCumplimiento` 0,9996 / `banda` "Alta").
 
 ---
 

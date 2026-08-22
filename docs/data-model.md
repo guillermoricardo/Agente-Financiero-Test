@@ -203,3 +203,23 @@ posterior a una entrevista ya `completada` crea una fila nueva en `fichas`
 (nunca se sobrescribe una cerrada) y, con ella, una fila nueva en `analisis`
 — la tabla está pensada para varias filas por `ficha_id`, ordenadas por
 `calculado_en`.
+
+---
+
+## Qué guarda `planes` (Fase 8)
+
+`secciones` es el objeto `SeccionesPlan` que redacta el modelo (7 claves —
+`tuMeta`, `tuFotoDeHoy`, `llegasSiSiguesAsi`, `tuPlanPasoAPaso`,
+`tusOpciones`, `deCada100Futuros`, `loQueMeFaltaSaber`), forzado por la
+herramienta `guardar_plan` (`src/lib/claude/herramienta-plan.ts`) para que
+nunca llegue como texto libre sin trocear. `markdown` es esas 7 secciones
+más la 8ª (el descargo) ensambladas por `construirMarkdownPlan` — función
+pura, con tests, a diferencia de la redacción del modelo. `descargo` repite
+el mismo texto literal fijo del código (nunca lo redacta el modelo:
+CLAUDE.md prohíbe que el descargo pueda faltar u olvidarse).
+
+A diferencia de `analisis`, `planes` NO se genera al confirmar: se genera
+la primera vez que alguien visita `/entrevista/[token]/plan` — no tiene
+sentido gastar una llamada al modelo si nadie va a leer el plan. Las
+visitas siguientes solo leen la fila ya guardada (`analisis_id` como
+clave de búsqueda, la más reciente).

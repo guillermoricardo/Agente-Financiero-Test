@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 
 export interface CampoConfirmable {
@@ -63,9 +64,15 @@ export default function ConfirmarFicha({
       <div className="w-full max-w-lg rounded-2xl bg-white p-8 text-center shadow-sm">
         <h1 className="text-xl font-semibold text-zinc-900">¡Listo, gracias!</h1>
         <p className="mt-4 text-base leading-7 text-zinc-600">
-          Con esto, Marta prepara tu diagnóstico completo. Te lo presenta ella
-          en vuestra reunión.
+          Ya tenemos tu resumen confirmado. Estamos haciendo números con tus
+          datos para preparar tu plan.
         </p>
+        <Link
+          href={`/entrevista/${token}/plan`}
+          className="mt-6 inline-block rounded-full bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800"
+        >
+          Ver mi plan
+        </Link>
       </div>
     );
   }
@@ -106,15 +113,15 @@ export default function ConfirmarFicha({
             {resumenDeudas}
           </p>
           <p className="mt-1 text-xs text-zinc-500">
-            Si algo de esto no es correcto, coméntaselo a Marta en la reunión.
+            Si algo de esto no es correcto, coméntaselo a tu asesor cuando lo contactes.
           </p>
         </div>
       </div>
 
       <div className="mt-6 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 text-xs leading-5 text-zinc-600">
         Esto es orientación educativa, no asesoramiento financiero regulado.
-        El diagnóstico que prepara Marta te ayuda a entender tu situación,
-        pero cualquier decisión la toma ella contigo, en vuestra reunión.
+        Tu plan se prepara automáticamente con tus números; para decisiones
+        concretas, contrasta siempre con un asesor autorizado.
       </div>
 
       {error && (
