@@ -54,6 +54,9 @@ de encontrar que uno recién hecho.
 - Un **proyecto de Supabase** (gratis, en `supabase.com`). Elige **región
   Americas**: vamos a guardar datos financieros de personas reales.
 - **Node.js** y **pnpm** instalados.
+- Para la Fase 11 (vigilancia de mercado): una **cuenta de Resend**
+  (`resend.com`, tiene capa gratuita) para el envío de las alertas por
+  correo, y el correo de la asesora que las recibe. Ver `.env.example`.
 
 ---
 

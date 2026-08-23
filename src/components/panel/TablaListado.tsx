@@ -15,7 +15,14 @@ import {
 // Ordenable por banda, que es como se detecta a quién hay que llamar
 // primero." Por defecto se ordena de más urgente a menos (banda Baja / sin
 // análisis primero) — el clic en la cabecera de columna invierte el orden.
-export default function TablaListado({ filas }: { filas: FilaListado[] }) {
+export default function TablaListado({
+  filas,
+  analisisConAlerta,
+}: {
+  filas: FilaListado[];
+  /** Fase 11 · analisis_id con al menos una alerta de mercado (R11). */
+  analisisConAlerta?: Set<string>;
+}) {
   const [ordenAscendente, setOrdenAscendente] = useState(true);
 
   const filasOrdenadas = useMemo(() => {
@@ -72,13 +79,20 @@ export default function TablaListado({ filas }: { filas: FilaListado[] }) {
               </td>
               <td className="px-4 py-3 text-zinc-600">{anios(fila.objetivo_plazo)}</td>
               <td className="px-4 py-3">
-                {fila.banda ? (
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${COLOR_BANDA[fila.banda]}`}>{fila.banda}</span>
-                ) : fila.entrevista_estado === 'completada' ? (
-                  <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600">Sin banda</span>
-                ) : (
-                  <span className="text-xs text-zinc-400">—</span>
-                )}
+                <span className="inline-flex items-center gap-1.5">
+                  {fila.banda ? (
+                    <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${COLOR_BANDA[fila.banda]}`}>{fila.banda}</span>
+                  ) : fila.entrevista_estado === 'completada' ? (
+                    <span className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium text-zinc-600">Sin banda</span>
+                  ) : (
+                    <span className="text-xs text-zinc-400">—</span>
+                  )}
+                  {fila.analisis_id && analisisConAlerta?.has(fila.analisis_id) && (
+                    <span title="El mercado movió su banda desde el último cálculo (R11)" className="text-amber-500">
+                      🔔
+                    </span>
+                  )}
+                </span>
               </td>
               <td className="px-4 py-3 text-zinc-600">{ETIQUETA_ESTADO[fila.entrevista_estado]}</td>
             </tr>

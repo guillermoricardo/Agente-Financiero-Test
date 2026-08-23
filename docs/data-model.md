@@ -22,6 +22,7 @@ clientes ──1:N──▶ entrevistas ──1:N──▶ mensajes
 | `analisis` | La salida del motor: todos los números del informe. |
 | `planes` | El texto entregado al cliente, con su descargo. |
 | `limites_uso` | Registro de uso por hash de IP, para frenar el abuso. |
+| `alertas_mercado` (Fase 11) | Un cambio de banda detectado para un cliente, con el texto enviado. |
 
 ### El orden de creación importa
 
@@ -238,6 +239,35 @@ Se crea con `security_invoker = true`: sin eso, una vista corre con los
 permisos de quien la creó y se saltaría RLS por completo. Con ella, sigue
 siendo `es_asesor()` quien decide qué fila se ve — la vista no es una
 puerta nueva, es una consulta ya resuelta.
+
+## `alertas_mercado` (Fase 11)
+
+Un cambio de banda detectado por la vigilancia diaria (R11). No modifica
+`analisis` — ese registro es la salida del motor sobre la ficha cerrada del
+cliente y no se toca; la alerta es un hecho posterior, calculado con datos
+de mercado que no existían cuando se hizo el análisis.
+
+| Columna | Qué es |
+|---|---|
+| `id` | PK. |
+| `analisis_id` | El análisis contra el que se compara (FK a `analisis`). |
+| `banda_anterior` / `banda_nueva` | Las dos bandas de R10 comparadas. |
+| `probabilidad_anterior` / `probabilidad_nueva` | Las probabilidades detrás de cada banda, para trazabilidad. |
+| `detalle` | `jsonb` con los rendimientos de mercado usados y el patrimonio revalorizado — la misma idea que `analisis.resultado`: todo número, auditable. |
+| `mensaje_marta` / `mensaje_cliente` | El texto en llano que redactó el modelo para cada destinatario, guardado tal cual se envió. |
+| `enviado_marta_en` / `enviado_cliente_en` | Cuándo se envió cada correo (`null` si falló el envío; la alerta ya quedó registrada igualmente). |
+| `detectada_en` | Cuándo corrió el job que la generó. |
+
+Por qué se guardan los dos mensajes ya redactados y no solo los números:
+igual que con `planes`, la trazabilidad exige poder ver exactamente qué leyó
+cada destinatario, no reconstruirlo después a partir de una plantilla que
+pudo cambiar.
+
+Solo se genera una fila por `analisis_id` **la primera vez** que cambia de
+banda respecto a él; si al día siguiente vuelve a cambiar (ya sea porque
+sigue moviéndose o porque revierte), esa comparación es contra la banda de
+la última alerta, no contra `analisis` de nuevo — evita reabrir el mismo
+aviso cada mañana mientras el mercado oscila alrededor del mismo umbral.
 
 ### Cómo se da de alta un asesor
 
