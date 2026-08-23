@@ -17,7 +17,7 @@
 | Motor original (Python) | ✅ Conservado como oráculo |
 | Esquema de base de datos | ✅ Escrito, sin aplicar |
 | Documentación del proyecto | ✅ Completa |
-| Aplicación | 🟡 Fase 9 (panel de Marta) completada — siguiente: Fase 10 |
+| Aplicación | ✅ Publicada — roadmap completo (Fases 1–10) |
 
 ---
 
@@ -263,10 +263,28 @@ y Plan idéntico al que vio el cliente, cifra por cifra.
 
 ---
 
-## Fase 10 · Publicación
+## Fase 10 · Publicación ✅
 
 Despliegue en Vercel, variables de entorno en el servidor, `/security-review`,
 y repaso de que no queda ninguna clave de servicio con prefijo público.
+
+**Completada el 2026-08-23** — ver
+`changelog/2026-08-23_17-59_publicacion-fase-10.md`. Proyecto en Vercel
+(`agente-financiero-test`) conectado al repositorio de GitHub, con deploy
+automático en cada push a `main`. Las cinco variables de entorno
+configuradas, con `ANTHROPIC_API_KEY` y `SUPABASE_SERVICE_ROLE_KEY`
+marcadas como sensibles (Vercel las oculta tras guardarlas). Repaso de
+seguridad: sin vulnerabilidades en dependencias (`pnpm audit`), sin claves
+hardcodeadas, sin prefijo `NEXT_PUBLIC_` mal puesto, RLS activo en las 8
+tablas sin políticas para `anon`. Se encontró y se borró una ruta de
+diagnóstico de la Fase 2 (`/api/verificar-supabase`) que había quedado
+pública y sin autenticación — no exponía datos sensibles, pero no tenía
+motivo para seguir en producción. Verificado en la URL real por el
+usuario: landing, entrevista completa, confirmación, plan del cliente con
+descarga, y login + listado del panel de Marta, todo funcionando contra
+las variables de entorno y la base de datos reales.
+
+**Con esto el roadmap completo (Fases 1 a 10) queda terminado.**
 
 ---
 
