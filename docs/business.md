@@ -99,6 +99,23 @@ deudas, patrimonio.
   eso la entrevista no desglosa gastos por categorías.
 - El cliente puede **pedir la eliminación** de sus datos.
 
+### La alerta de mercado (F7) no cambia el estatus regulatorio
+
+Desde 2026-08-23 el sistema avisa periódicamente si el mercado movería la
+banda de probabilidad de un cliente (R11). Esto **no** convierte al producto
+en gestión de carteras ni en asesoramiento continuo regulado, siempre que se
+respete el límite que lo separa: el sistema **informa**, nunca **decide ni
+ejecuta** nada sobre el dinero de nadie.
+
+- El aviso lleva el mismo descargo de orientación educativa que cualquier
+  plan.
+- Nunca sugiere una acción concreta («vende», «compra más») ni nombra un
+  producto: solo dice que la probabilidad calculada cambió y remite a hablar
+  con Marta.
+- No hay ejecución automática de ningún tipo. Si algún día se plantea que el
+  sistema actúe sobre la cartera sin intervención humana, eso sí cruzaría la
+  línea hacia gestión regulada — y no está en el alcance de este proyecto.
+
 ### Prudencia como criterio, no como estilo
 
 Las reglas obligan a que todo supuesto sobre un dato incierto vaya sesgado
@@ -121,3 +138,5 @@ que llegará a su meta cuando probablemente no llegue hace daño real.
 | Un plan se interpreta como asesoramiento regulado | Descargo obligatorio, sin productos concretos, sin promesas. |
 | **Alguien agota el saldo de la API** recargando la entrevista pública | Límite por IP y hora, tope de mensajes por entrevista, caducidad a 30 días. Riesgo nuevo al abrir la entrada: con enlaces por invitación no existía. |
 | Leads basura con correos falsos | Asumido de momento. La entrevista dura 5 minutos: quien la completa entera con datos coherentes ya se ha cualificado solo. |
+| La alerta de mercado (F7) se lee como gestión activa o como promesa de rentabilidad | Límites duros de R11: nunca sugiere una acción concreta, nunca nombra un producto, mismo descargo educativo que el resto. |
+| La fuente de datos de mercado (Yahoo Finance, endpoint no oficial) cambia o deja de responder | Riesgo aceptado y documentado en `docs/architecture.md`. El job de vigilancia falla de forma visible (sin alerta ese día) en vez de inventar un dato. |

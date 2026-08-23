@@ -284,11 +284,41 @@ usuario: landing, entrevista completa, confirmación, plan del cliente con
 descarga, y login + listado del panel de Marta, todo funcionando contra
 las variables de entorno y la base de datos reales.
 
-**Con esto el roadmap completo (Fases 1 a 10) queda terminado.**
+**Con esto el roadmap de la versión inicial (Fases 1 a 10) quedó terminado.**
+
+---
+
+## Fase 11 · Vigilancia de mercado y alerta de cambio de banda
+
+> Añadida el 2026-08-23. Amplía el alcance original del PRD (que excluía
+> "seguimiento continuo de carteras") con un límite explícito: se automatiza
+> el **aviso**, nunca la **gestión**. Ver `docs/prd.md` § F7 y
+> `docs/criterio/reglas-recomendacion.md` § R11.
+
+- Migración `0003`: tablas `alertas_mercado` (Fase 11) y el snapshot de
+  mercado que la respalda.
+- `src/lib/mercado/`: módulo puro que revaloriza la cartera calculada con el
+  rendimiento real por clase de activo (proxies vía Yahoo Finance, endpoint
+  no oficial — riesgo aceptado, ver "Trampas conocidas del stack" en
+  `architecture.md`) y vuelve a derivar la banda con el motor existente, sin
+  tocarlo.
+- Ruta `/api/cron/vigilancia-mercado`, disparada a diario por Vercel Cron,
+  protegida con `CRON_SECRET`.
+- Redacción del aviso por el modelo a partir del JSON del módulo de mercado
+  — nunca calcula, solo traduce, mismo patrón que el plan (Fase 8).
+- Envío por correo (Resend) a Marta y al cliente, y señal nueva en el panel
+  de Marta.
+
+**Hecho cuando:** con un cliente de prueba en modo `completo`, forzar un
+rendimiento de mercado que cruce de banda produce una fila en
+`alertas_mercado`, un correo a Marta, un correo al cliente, y una señal
+visible en el panel — y con un rendimiento que no cruza de banda, no se
+genera nada.
 
 ---
 
 ## Fuera del roadmap
 
-Están en `mejoras/backlog.md`: envío de correos, exportar el plan a PDF,
-recálculo masivo al cambiar reglas, multi-asesor con permisos.
+Están en `mejoras/backlog.md`: exportar el plan a PDF, recálculo masivo al
+cambiar reglas, multi-asesor con permisos. El envío de correos (antes
+MEJORA-02) se construye ya como parte de la Fase 11.

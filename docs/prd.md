@@ -109,6 +109,16 @@ ningún dato, incluyendo que el correo se usará para que un asesor pueda
 contactar. El descargo de «orientación educativa, no asesoramiento regulado»
 visible en la interfaz y en todo plan emitido.
 
+**F7 · Vigilancia de mercado y alerta de cambio de banda.** Una vez al día,
+el sistema revisa si el mercado real movería la banda de probabilidad de
+cumplimiento (Alta/Razonable/Frágil/Baja) de un cliente con diagnóstico
+`completo` (R11 de `docs/criterio/reglas-recomendacion.md`). Si cambia, avisa
+a Marta en su panel y por correo, y también al cliente por correo. Es una
+**alerta educativa periódica**, no gestión de cartera: no cambia nada por su
+cuenta, no ejecuta operaciones, no sube el nivel de riesgo, y el texto nunca
+nombra un producto ni promete una rentabilidad — mismos límites duros que el
+resto del sistema. Ver la nota bajo la tabla de alcance.
+
 ### Fuera de alcance
 
 | Qué | Por qué |
@@ -117,8 +127,17 @@ visible en la interfaz y en todo plan emitido.
 | Ejecutar operaciones o conectar con brókeres | El producto orienta; no opera. |
 | Conexión bancaria automática (open banking) | Los datos los da el cliente. Añadiría complejidad regulatoria sin mejorar el diagnóstico. |
 | Asesoramiento financiero regulado | Requiere autorización que el producto no tiene. Es orientación educativa. |
-| Seguimiento continuo de carteras | El producto entrega un diagnóstico puntual, no gestión. |
+| Gestión activa de cartera (rebalanceo, ejecución, cambio de riesgo por mercado) | El producto orienta y avisa; no gestiona ni opera. Ver F7. |
 | Multi-idioma | Castellano. |
+
+**Sobre "seguimiento continuo de carteras":** hasta el 2026-08-23 esta fila
+decía justo eso y estaba fuera de alcance. Se reabrió deliberadamente para
+F7, con un límite explícito: lo que se automatiza es el **aviso**, no la
+**gestión**. El sistema nunca actúa sobre la cartera de nadie; solo informa
+de un cambio calculado y remite a hablar con Marta. Si esa distinción se
+difumina en el futuro (por ejemplo, si un aviso empezara a sugerir una
+acción concreta al cliente), hay que parar y revisar si el producto sigue
+siendo orientación educativa o ya cruzó a gestión regulada.
 
 ---
 

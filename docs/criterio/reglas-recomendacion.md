@@ -132,6 +132,57 @@ Mínimos y costes (aplican siempre): sin mínimo universal — 25–50 €/mes v
 - Bandas: **Alta ≥ 80 % · Razonable 65–79 % · Frágil 50–64 % · Baja < 50 %**. [confirmado]
 - Parámetros de simulación (estándar de mercado): volatilidad anual — liquidez 0,5 %, renta fija 5 %, renta variable global 15 %, oro 15 %; correlaciones — RV–RF 0,1 · RV–oro 0,0 · RF–oro 0,2 · liquidez ≈ 0 con todo. [estimado]
 
+## R11 · Vigilancia de mercado y alerta de cambio de banda
+
+> Añadida 2026-08-23. Regla nueva, no heredada de las sesiones de escritorio:
+> nace de extender el producto de diagnóstico puntual a un aviso periódico.
+> Sujeta a la misma revisión anual que el resto. [estimado — pendiente de
+> validar por Marta en su totalidad]
+
+**Disparo:** una vez al día, para cada cliente cuyo último análisis esté en
+modo `completo` (R9 — sin cartera objetivo no hay nada que revalorizar), se
+recalcula la banda de probabilidad de cumplimiento (R10) usando el
+rendimiento de mercado real observado desde la fecha de ese análisis, y se
+compara con la banda ya guardada. Si difiere, se genera una alerta.
+
+**Cómo se recalcula** — nunca "de cabeza", igual que el resto del motor:
+
+1. Tomar el rendimiento real de cada clase de activo (renta variable global,
+   renta fija, oro; la liquidez no se revaloriza) entre la fecha del último
+   análisis y hoy.
+2. Revalorizar el patrimonio del cliente aplicando ese rendimiento **a la
+   cartera objetivo que el motor calculó** (R3 ajustada por plazo), no a la
+   distribución declarada en la ficha. **Supuesto explícito, sesgado a
+   favor de la prudencia del aviso, no del cliente:** el sistema no sabe si
+   el cliente ejecutó de verdad esa cartera — se asume que sí, porque es la
+   única cifra de la que dispone. La alerta lo dice así, sin presentarlo
+   como un hecho confirmado. [estimado]
+3. Con el patrimonio revalorizado y el tiempo restante hasta `objetivo_plazo`,
+   volver a ejecutar el Monte Carlo (R10, misma semilla y mismos parámetros)
+   y obtener la banda resultante.
+4. Alerta en **cualquier cambio de banda**, mejore o empeore — no solo si
+   empeora. Ocultar las mejoras sería tan engañoso como ocultar los
+   deterioros. [estimado — el umbral podría exigir un margen mínimo en vez
+   de cualquier cruce de banda; a validar con el uso real]
+
+**Límites duros de esta regla** (heredan los de arriba, no los sustituyen):
+
+- La alerta **nunca** cambia la cartera objetivo, sube el nivel de riesgo ni
+  ejecuta nada. Es información, no una nueva recomendación (línea roja de R4
+  sigue vigente).
+- **Nunca** se nombra un índice, fondo o ticker concreto en el texto que
+  llega a Marta o al cliente — los proxies de mercado son un detalle interno
+  del cálculo, igual que las clases de activo de R3/R5 no son productos.
+- El aviso remite a hablar con Marta; no sustituye la conversación ni
+  propone una acción concreta al cliente.
+- Todo número del aviso sale de código ejecutado — el modelo de lenguaje
+  solo redacta el texto a partir del JSON ya calculado, nunca decide si hay
+  alerta ni con qué cifra.
+
+**Datos secundarios:** el detalle de qué proveedor y qué proxy de mercado se
+usa por clase de activo es una decisión de implementación, no de criterio —
+vive en `docs/architecture.md`, no aquí.
+
 ---
 
 ## Límites duros (recordatorio transversal)
@@ -146,3 +197,6 @@ Mínimos y costes (aplican siempre): sin mínimo universal — 25–50 €/mes v
 1. Colchón fuera de la cartera invertida (R1). `[estimado]`
 2. Cripto a 0 % + señal de reunión en perfiles no dinámicos (R3). `[estimado]`
 3. Volatilidades y correlaciones del Monte Carlo (R10). `[estimado]`
+4. Regla completa de vigilancia de mercado: revalorizar sobre la cartera
+   calculada en vez de la ejecutada, y alertar en cualquier cambio de banda
+   en vez de exigir un margen mínimo (R11). `[estimado]`

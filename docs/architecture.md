@@ -144,10 +144,14 @@ src/
 │   ├── entrevista/[token]/    la entrevista del cliente
 │   ├── plan/[token]/          el plan entregado
 │   ├── panel/                 el panel de la asesora (requiere sesión)
-│   └── api/                   rutas de servidor
+│   └── api/
+│       ├── entrevistas/       rutas de servidor de la entrevista
+│       └── cron/vigilancia-mercado/  Fase 11 · disparada por Vercel Cron
 ├── components/
 ├── lib/
 │   ├── motor/                 ← MOTOR VERIFICADO. No tocar.
+│   ├── mercado/                Fase 11 · vigilancia de mercado, código puro
+│   ├── correo/                 Fase 11 · plantillas y envío (Resend)
 │   ├── supabase/              clientes de base de datos
 │   └── claude/                prompts y definición de herramientas
 └── types/
@@ -172,6 +176,65 @@ lenguaje. Entra una ficha, salen números.
   `src/lib/motor/supuestos.ts`.
 - Si cambia una regla de `docs/criterio/reglas-recomendacion.md`, se cambia
   `supuestos.ts` y se regenera el baseline (`pnpm baseline`).
+
+---
+
+## Vigilancia de mercado (Fase 11)
+
+Añade un tercer disparador al principio de la sección: además del cliente
+que conversa y de Marta que abre el panel, un **Cron Job de Vercel** entra
+una vez al día.
+
+```
+Vercel Cron (diario) ──▶ /api/cron/vigilancia-mercado
+                              │
+                              ▼
+                    Por cada cliente con analisis.modo = 'completo':
+                    [MERCADO · código puro] revaloriza la cartera
+                    calculada con el rendimiento real (proxies) desde
+                    el último análisis, y vuelve a correr el Monte
+                    Carlo del motor existente (sin tocarlo)
+                              │  ¿cambió la banda?
+                              ▼
+                    [MODELO redactor] ──▶ alerta en llano
+                              │
+                              ▼
+                    Panel de Marta (señal) + correo a Marta + correo al cliente
+```
+
+Mismo principio rector que el resto: `src/lib/mercado/` es código puro, sin
+llamadas al modelo. El modelo solo redacta el texto del aviso a partir del
+JSON que produce ese módulo — igual que el redactor del plan (Fase 8) nunca
+calcula, solo traduce.
+
+**Por qué es un módulo aparte y no una extensión de `src/lib/motor/`.** El
+motor es intocable y solo sabe de una ficha a la vez, sin fecha de "hoy" ni
+mercado. `src/lib/mercado/` depende del tiempo (qué ha pasado desde el
+último análisis) y de una fuente externa (precios reales); son
+responsabilidades distintas. Reutiliza las funciones puras del motor
+(`monteCarlo`, `rentabilidadCartera`…) importándolas, nunca copiándolas.
+
+**Proxies de mercado.** Como el criterio (R3/R5) nunca nombra productos
+concretos, tampoco lo hace la aplicación de cara al usuario: los símbolos
+que se consultan (un ETF o índice representativo de renta variable global,
+uno de renta fija y uno de oro) son un detalle interno de
+`src/lib/mercado/proxies.ts`, y no aparecen nunca en el texto de una alerta,
+ni al cliente ni a Marta. La liquidez no se revaloriza: su rentabilidad es
+plana (R5).
+
+**Fuente de datos: Yahoo Finance, endpoint no oficial.** Decisión tomada
+conscientemente pese al riesgo: Yahoo no ofrece una API pública documentada
+para esto. Ver «Trampas conocidas del stack» más abajo para el detalle y la
+mitigación.
+
+**Correo: Resend.** Nueva integración del stack, solo desde rutas de
+servidor (mismo principio que la clave de Anthropic — nunca en el
+navegador). Plantillas en `src/lib/correo/`.
+
+**Horario del Cron.** `vercel.json` fija `0 12 * * *` (12:00 UTC) — decisión
+propia, no del usuario: cae sobre las 7-9 de la mañana en las zonas horarias de Latinoamérica/EE.UU.
+que menciona `docs/business.md`. Si no encaja con la zona real de los
+clientes, es un único número que cambiar en ese archivo.
 
 ---
 
@@ -253,6 +316,27 @@ in request URL"` — no dice nada sobre una URL duplicada.
 **Project Settings → API Keys**, campo **Project URL**: termina en
 `.supabase.co`, sin ningún sufijo (`https://<ref>.supabase.co`).
 
+### Yahoo Finance no tiene API oficial (Fase 11)
+
+Se usa de todos modos, por decisión explícita del usuario tras conocer el
+riesgo: no hay contrato de estabilidad ni condiciones de uso comercial
+claras, y el endpoint puede cambiar de forma o desaparecer sin aviso.
+
+**Mitigación aplicada:**
+
+- El job de vigilancia **falla en silencio para ese día** si la fuente no
+  responde o cambia de forma — nunca inventa un rendimiento de mercado.
+  Sin dato de mercado fiable, no hay alerta ese día; se reintenta al
+  siguiente.
+- Toda la lógica de vigilancia vive detrás de un adaptador
+  (`src/lib/mercado/proveedor-precios.ts`) para que cambiar de fuente el día
+  que Yahoo deje de servir sea sustituir un archivo, no reescribir el
+  módulo.
+- Si en producción esto da problemas de estabilidad, la salida documentada
+  es migrar a un proveedor con API oficial (Alpha Vantage, Twelve Data,
+  Financial Modeling Prep u otro) — decisión pendiente del usuario, no
+  automática.
+
 ### Next.js 16 escribe su propio `AGENTS.md`
 
 `next dev` genera y regenera un `AGENTS.md` en la raíz avisando de que esta
@@ -298,6 +382,8 @@ Ver `.env.example`. Las que el sistema necesita:
 | `NEXT_PUBLIC_SUPABASE_URL` | Proyecto de Supabase | Pública |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Clave pública | Pública |
 | `SUPABASE_SERVICE_ROLE_KEY` | Escrituras del servidor, salta RLS | **Solo servidor.** Nunca con prefijo `NEXT_PUBLIC_`. |
+| `RESEND_API_KEY` (Fase 11) | Envío de correos de alerta | **Solo servidor.** |
+| `CRON_SECRET` (Fase 11) | Autoriza la llamada de Vercel Cron a `/api/cron/vigilancia-mercado` | **Solo servidor.** |
 
 El prefijo `NEXT_PUBLIC_` empaqueta la variable en el JavaScript del navegador.
 Ponérselo a la clave de servicio equivale a publicar el acceso completo a la

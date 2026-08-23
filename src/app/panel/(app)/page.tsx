@@ -23,6 +23,13 @@ export default async function ListadoPanel() {
     );
   }
 
+  // Fase 11 · qué análisis del listado tienen al menos una alerta de mercado
+  // (R11), para marcarlos con una señal. No distingue "vista"/"no vista"
+  // todavía: eso queda para cuando haga falta de verdad.
+  const analisisIds = ((filas as FilaListado[]) ?? []).map((f) => f.analisis_id).filter((id): id is string => id !== null);
+  const { data: alertas } = await supabase.from('alertas_mercado').select('analisis_id').in('analisis_id', analisisIds);
+  const analisisConAlerta = new Set((alertas ?? []).map((a) => a.analisis_id as string));
+
   return (
     <div>
       <h1 className="text-xl font-semibold text-zinc-900">Tus leads</h1>
@@ -31,7 +38,7 @@ export default async function ListadoPanel() {
         llames.
       </p>
       <div className="mt-6">
-        <TablaListado filas={(filas as FilaListado[]) ?? []} />
+        <TablaListado filas={(filas as FilaListado[]) ?? []} analisisConAlerta={analisisConAlerta} />
       </div>
     </div>
   );

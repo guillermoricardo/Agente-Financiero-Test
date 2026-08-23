@@ -34,6 +34,11 @@ secundaria sigue teniendo sentido.
 **Área:** Backend
 **Prioridad estimada:** Media
 **Origen:** El correo ya se captura, pero hoy solo identifica al lead
+**Estado:** En construcción — Fase 11 añade el envío de correos (Resend)
+para la alerta de mercado. Queda pendiente extenderlo a: enviar el plan al
+cliente al terminar la entrevista, y avisar a Marta cuando entra un lead
+nuevo (ninguno de los dos es parte de la Fase 11, que solo cubre las
+alertas de R11).
 
 Enviar al cliente su plan por correo al terminar, y avisar a la asesora cuando
 entra un lead nuevo.
