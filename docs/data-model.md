@@ -223,3 +223,34 @@ la primera vez que alguien visita `/entrevista/[token]/plan` — no tiene
 sentido gastar una llamada al modelo si nadie va a leer el plan. Las
 visitas siguientes solo leen la fila ya guardada (`analisis_id` como
 clave de búsqueda, la más reciente).
+
+---
+
+## La vista `panel_listado` (Fase 9)
+
+El listado del panel de Marta necesita, por entrevista, tres "últimos por
+grupo" a la vez: la ficha más reciente, y el análisis más reciente de esa
+ficha. En SQL puro eso son tres `LATERAL JOIN`; se resuelve una única vez
+como vista (`supabase/migrations/0002_panel_vista_listado.sql`) en vez de
+repetirlo en cada consulta del panel.
+
+Se crea con `security_invoker = true`: sin eso, una vista corre con los
+permisos de quien la creó y se saltaría RLS por completo. Con ella, sigue
+siendo `es_asesor()` quien decide qué fila se ve — la vista no es una
+puerta nueva, es una consulta ya resuelta.
+
+### Cómo se da de alta un asesor
+
+No hay pantalla de alta: estar en `asesores` es el permiso (`0001`), y las
+únicas escrituras posibles pasan por el SQL Editor de Supabase, a mano,
+igual que cualquier migración.
+
+1. Supabase → **Authentication → Users → Add user**, con correo y
+   contraseña. Copiar el UUID del usuario creado.
+2. En el **SQL Editor**:
+   ```sql
+   insert into asesores (id, nombre) values ('<uuid-del-usuario>', 'Marta');
+   ```
+
+Sin el segundo paso, ese usuario puede iniciar sesión pero no ve ningún
+dato: `es_asesor()` devolvería `false` y RLS le devuelve el listado vacío.

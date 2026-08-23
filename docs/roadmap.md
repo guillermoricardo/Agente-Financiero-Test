@@ -17,7 +17,7 @@
 | Motor original (Python) | ✅ Conservado como oráculo |
 | Esquema de base de datos | ✅ Escrito, sin aplicar |
 | Documentación del proyecto | ✅ Completa |
-| Aplicación | 🟡 Fase 8 (el plan en cristiano) completada — siguiente: Fase 9 |
+| Aplicación | 🟡 Fase 9 (panel de Marta) completada — siguiente: Fase 10 |
 
 ---
 
@@ -241,7 +241,7 @@ exactamente — `vfActualEurosHoy` (~4.261.696 €), `gapEuros` (0),
 
 ---
 
-## Fase 9 · El panel de Marta
+## Fase 9 · El panel de Marta ✅
 
 - Auth y tabla `asesores`.
 - Listado ordenable por banda de probabilidad.
@@ -249,6 +249,17 @@ exactamente — `vfActualEurosHoy` (~4.261.696 €), `gapEuros` (0),
 
 **Hecho cuando:** Marta identifica en menos de 30 segundos qué cliente tiene la
 meta en riesgo.
+
+**Completada el 2026-08-23** — ver
+`changelog/2026-08-22_19-12_panel-de-marta-fase-9.md`. Verificado en la
+máquina del usuario: login con correo y contraseña, listado con nombre,
+correo, meta, plazo, banda y estado, ordenado por defecto de más urgente
+(sin completar o sin banda) a menos, con la fila de banda "Baja" destacada
+en rojo entre las demás — identificable al instante. La ficha de un cliente
+completo mostró las tres vistas: Diagnóstico con las cuatro visualizaciones
+(probabilidad 100 %/"Alta", composición de cartera, proyección p10/p50/p90,
+checklist de R1), Ficha cruda con cada dato, su etiqueta y su cita literal,
+y Plan idéntico al que vio el cliente, cifra por cifra.
 
 ---
 
